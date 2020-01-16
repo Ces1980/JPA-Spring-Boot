@@ -30,8 +30,13 @@ public class ClienteController {
 		Cliente cliente = new Cliente();
 		model.put("cliente", cliente);
 		model.put("titulo", "Formulario de cliente");
-		return "from";
+		return "form";
 	}
 	
 	
+	@RequestMapping(value = "/form", method = RequestMethod.POST)
+	public String guardar(Cliente cliente) {
+		clienteDao.save(cliente);
+		return "redirect:listar";
+	}
 }

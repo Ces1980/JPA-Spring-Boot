@@ -2,11 +2,12 @@
 <html xmlns="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8" />
-<title th:text="${titulo}"></title>
+<title th:text="${titulo}">Insert title here</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
+
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -26,33 +27,32 @@
 			</ul>
 		</div>
 	</nav>
-
 	<div class="container">
-		<h1
+	<h1
 			class="text-primary border border-success border-top-0 border-left-0 border-right-0"
 			th:text="${titulo}"></h1>
-		<a th:href="@{/form}">Crear cliente</a>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>id</th>
-					<th>nombre</th>
-					<th>apellido</th>
-					<th>email</th>
-					<th>fecha</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="cliente: ${clientes}">
-					<td th:text="${cliente.id}"></td>
-					<td th:text="${cliente.nombre}"></td>
-					<td th:text="${cliente.apellido}"></td>
-					<td th:text="${cliente.email}"></td>
-					<td th:text="${cliente.createAt}"></td>
-				</tr>
-			</tbody>
+	<!--th:object="${cliente}" hace referencia al objeto que se esta mapeando -->
+	<!--th:action="@{/form}" hace referencia a la vista desde donde se van a enviar los datos  -->
+	<form th:action="@{/form}" th:object="${cliente}" method="post">
+		<table>
+			<tr>
+				<td>Nombre</td>
+				<td><input type="text" th:field="*{nombre}" class="form-control"/></td>
+			</tr>
+			<tr>
+				<td>Apellido</td>
+				<td><input type="text" th:field="*{apellido}" class="form-control"/></td>
+			</tr>
+			<tr>
+				<td>Email</td>
+				<td><input type="email" th:field="*{email}" class="form-control"/></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="Crear Cliente" class="btn btn-primary"></td>
+			</tr>
 		</table>
-
+		<input type="hidden" th:field="*{id}" />
+	</form>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
 		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
