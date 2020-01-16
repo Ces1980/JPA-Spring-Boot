@@ -6,6 +6,6 @@ import com.ideasbolsa.springboot.app.models.entity.Cliente;
 
 public interface IClienteDao {
 	
-	public List<Cliente> finAll();
+	public List<Cliente> findAll();
 
 }

@@ -9,20 +9,20 @@
 	<table>
 		<thead>
 			<tr>
-				<th>Id</th>
-				<th>Nombre</th>
-				<th>Apellido</th>
-				<th>Email</th>
-				<th>Fecha</th>
+				<th>id</th>
+				<th>nombre</th>
+				<th>apellido</th>
+				<th>email</th>
+				<th>fecha</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="cliente: ${clientes}">
-				<td th: text="${cliente.id}"></td>
-				<td th: text="${cliente.nombre}"></td>
-				<td th: text="${cliente.apellido}"></td>
-				<td th: text="${cliente.email}"></td>
-				<td th: text="${cliente.createAt}"></td>
+				<td th:text="${cliente.id}"></td>
+				<td th:text="${cliente.nombre}"></td>
+				<td th:text="${cliente.apellido}"></td>
+				<td th:text="${cliente.email}"></td>
+				<td th:text="${cliente.createAt}"></td>
 			</tr>
 		</tbody>
 	</table>
