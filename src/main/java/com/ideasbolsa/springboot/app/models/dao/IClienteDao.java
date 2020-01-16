@@ -5,7 +5,9 @@ import java.util.List;
 import com.ideasbolsa.springboot.app.models.entity.Cliente;
 
 public interface IClienteDao {
-	
+	//Método para listar
 	public List<Cliente> findAll();
+	//Método para guardar
+	public void save(Cliente cliente);
 
 }
