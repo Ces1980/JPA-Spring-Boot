@@ -9,5 +9,7 @@ public interface IClienteDao {
 	public List<Cliente> findAll();
 	//Método para guardar
 	public void save(Cliente cliente);
+	//Método para generar busqueda por id
+	public Cliente findOne(Long id);
 
 }
