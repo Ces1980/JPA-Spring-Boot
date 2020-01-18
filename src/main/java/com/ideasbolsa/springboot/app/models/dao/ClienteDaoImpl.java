@@ -42,11 +42,7 @@ public class ClienteDaoImpl implements IClienteDao {
 
 	@Override
 	public void delete(Long id) {
-		//Se invoca el método findOne(id) ya implementado para 
-		//asignarlo a el objeto cliente de la clase cliente
-		Cliente cliente = findOne(id);
-		//se usa el metodo remove(objeto) para indicar el objeto a remover
-		em.remove(cliente);
+		em.remove(findOne(id));
 	}
 
 }
