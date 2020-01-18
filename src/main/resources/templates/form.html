@@ -31,36 +31,42 @@
 	<h1
 			class="text-primary border border-success border-top-0 border-left-0 border-right-0"
 			th:text="${titulo}"></h1>
-	<!--th:object="${cliente}" hace referencia al objeto que se esta mapeando -->
-	<!--th:action="@{/form}" hace referencia a la vista desde donde se van a enviar los datos  -->
 	<form th:action="@{/form}" th:object="${cliente}" method="post">
-		
+		<!--th:errorClass="'form-control alert-danger'"...:Pinta de color rojo la caja de texto cuando hay un error en el envío del dato 
+			"form-text text-danger" ..pinta de rojo las letras del mensaje
+			 th:if="${#fields.hasErrors('nombre')}" indica el campo donde se va a pintar el mensaje
+			  th:errors="*{nombre}"> Indica el campo donde se va a generar el mensaje  -->
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Nombre</label>
 				<div class="col-sm-6">
-					<input type="text" th:field="*{nombre}" class="form-control"/>
+					<input type="text" th:field="*{nombre}" class="form-control" th:errorClass="'form-control alert-danger'"/>
+					<small class="form-text text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></small> 
 				</div>
 			</div>
 			
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Apellido</label>
 				<div class="col-sm-6">
-					<input type="text" th:field="*{apellido}" class="form-control"/>
+					<input type="text" th:field="*{apellido}" class="form-control" th:errorClass="'form-control alert-danger'"/>
+					<small class="form-text text-danger" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></small>
 				</div>
 			</div>
 			
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Email</label>
 				<div class="col-sm-6">
-					<input type="email" th:field="*{email}" class="form-control"/>
-				</div>
+					<input type="email" placeholder="Ingrese email" th:field="*{email}" class="form-control" th:errorClass="'form-control alert-danger'"/>
+					<small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+				 </div>
 			</div>
 		<!--Creando el campo de la fecha  en la clase Cliente.java se va a quitar el método
 		prePersist() el cual generaba la fecha anteriormente, ahora la fecha se generara vía formulario -->
 		<div class="form-group row">
 			<label class="col-sm-2 col-form-label">Fecha</label>
 				<div class="col-sm-6">
-					<input type="text" th:field="*{createAt}" class="form-control">
+					<input type="text" placeholder="yyyy-mm-dd" th:field="*{createAt}" class="form-control" th:errorClass="'form-control alert-danger'">
+					<small class="form-text text-danger" th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></small>
+  
 				</div>
 		</div>
 			

@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -22,15 +26,24 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	/*Configurando anotaciones de validación*/
+	/*@NotEmpty: que el campo no sea envíado sin caracteres--> sólo usado en los String*/
+	/*@Email: valida que el campo envie datos en formato de correo electronico*/
+	/*@Size(min=4, max = 20): Limita el ingreso minimo y/o máximo de caracteres*/
+	@NotEmpty
 	private String nombre;
+	@NotEmpty
 	private String apellido;
+	@NotEmpty
+	@Email
 	private String email;
 
-	
-	//@DateTimeFormat(pattern = "yyyy-MM-dd") Especificar el formato de la fecha
+	/*@NotNull: que el campo no sea envíado sin caracteres--> usando en campos
+	 * con caracteres numericos o caracteres*/
+	@NotNull
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-mm-dd")
 	private Date createAt;
 
 	private static final long serialVersionUID = 1L;
