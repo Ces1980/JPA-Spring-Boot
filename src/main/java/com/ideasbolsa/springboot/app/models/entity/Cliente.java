@@ -8,10 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "clientes")
@@ -25,18 +26,16 @@ public class Cliente implements Serializable {
 	private String apellido;
 	private String email;
 
+	
+	//@DateTimeFormat(pattern = "yyyy-MM-dd") Especificar el formato de la fecha
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createAt;
 
 	private static final long serialVersionUID = 1L;
 
-	/*Método que permite generar la fecha de registro antes de enviar los datos
-	 * del formulario a la base de datos*/
-	@PrePersist
-	public void prePersist() {
-		createAt = new Date();
-	}
+	
 	public Long getId() {
 		return id;
 	}

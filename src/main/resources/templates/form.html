@@ -55,6 +55,14 @@
 					<input type="email" th:field="*{email}" class="form-control"/>
 				</div>
 			</div>
+		<!--Creando el campo de la fecha  en la clase Cliente.java se va a quitar el método
+		prePersist() el cual generaba la fecha anteriormente, ahora la fecha se generara vía formulario -->
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">Fecha</label>
+				<div class="col-sm-6">
+					<input type="text" th:field="*{createAt}" class="form-control">
+				</div>
+		</div>
 			
 			<div class="form-group">
 				<div class="col-sm-6">
