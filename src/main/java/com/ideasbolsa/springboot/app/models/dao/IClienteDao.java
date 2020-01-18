@@ -11,5 +11,7 @@ public interface IClienteDao {
 	public void save(Cliente cliente);
 	//Método para generar busqueda por id
 	public Cliente findOne(Long id);
+	//Método para elminar un registro
+	public void delete(Long id);
 
 }

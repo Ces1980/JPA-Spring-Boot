@@ -26,10 +26,7 @@ public class ClienteDaoImpl implements IClienteDao {
 	@Override
 	@Transactional
 	public void save(Cliente cliente) {
-		/*
-		 * Se modifica el método save para que al guardar identifique si existe el id o
-		 * que sea mayor de cero para modificar el objeto
-		 */
+		
 		if (cliente.getId() != null && cliente.getId() > 0) {
 			em.merge(cliente);
 		} else {
@@ -37,15 +34,19 @@ public class ClienteDaoImpl implements IClienteDao {
 		}
 	}
 
-	/*
-	 * Este metodo busca por id en la base de datos Recibe como parametro el tipo de
-	 * dato y el nombre de dato (Long id) y retorna el método find del objeto
-	 * declado del tipo EntityManager, como parametro recibe la clase del cliente y
-	 * su id
-	 */
+	
 	@Override
 	public Cliente findOne(Long id) {
 		return em.find(Cliente.class, id);
+	}
+
+	@Override
+	public void delete(Long id) {
+		//Se invoca el método findOne(id) ya implementado para 
+		//asignarlo a el objeto cliente de la clase cliente
+		Cliente cliente = findOne(id);
+		//se usa el metodo remove(objeto) para indicar el objeto a remover
+		em.remove(cliente);
 	}
 
 }
