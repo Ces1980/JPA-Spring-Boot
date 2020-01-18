@@ -12,12 +12,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.ideasbolsa.springboot.app.models.dao.IClienteDao;
 import com.ideasbolsa.springboot.app.models.entity.Cliente;
 
 
 @Controller
+@SessionAttributes("cliente")
+/*@SessionAttributes("cliente") --> indicamos que se va a guardar en los atributos de la session el objeto
+ * que se ha mapeado al formulario, que en este caso es cliente*/
 public class ClienteController {
 
 	@Autowired
@@ -51,14 +56,19 @@ public class ClienteController {
 		return"form";
 	}
 	
+	/*En el método guardar se agrerga un parametro (SessionStatus status) para
+	 *que se invoque el método setComplete() y así que el objeto cliente termine la session 
+	 *y se ejecute la accion de los métodos, ya sea guardar o eliminar, editar 
+	 * */
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
-	public String guardar(@Valid @ModelAttribute("cliente") Cliente cliente, BindingResult result, Model model) {
+	public String guardar(@Valid @ModelAttribute("cliente") Cliente cliente, BindingResult result, Model model, SessionStatus status) {
 		if(result.hasErrors()) {
 			model.addAttribute("titulo", "Formulario de cliente");
 			return "form";
 		}
 		
 		clienteDao.save(cliente);
+		status.setComplete();
 		return "redirect:listar";
 	}
 }
