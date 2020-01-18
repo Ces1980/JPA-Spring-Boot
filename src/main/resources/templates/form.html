@@ -35,7 +35,7 @@
 		<!--th:errorClass="'form-control alert-danger'"...:Pinta de color rojo la caja de texto cuando hay un error en el envío del dato 
 			"form-text text-danger" ..pinta de rojo las letras del mensaje
 			 th:if="${#fields.hasErrors('nombre')}" indica el campo donde se va a pintar el mensaje
-			  th:errors="*{nombre}"> Indica el campo donde se va a generar el mensaje  -->
+			  th:errors="*{nombre}"> Indica el campo donde se va a generar el mensajevalidaciones  -->
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Nombre</label>
 				<div class="col-sm-6">
@@ -55,7 +55,7 @@
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">Email</label>
 				<div class="col-sm-6">
-					<input type="email" placeholder="Ingrese email" th:field="*{email}" class="form-control" th:errorClass="'form-control alert-danger'"/>
+					<input type="text" placeholder="Ingrese email" th:field="*{email}" class="form-control" th:errorClass="'form-control alert-danger'"/>
 					<small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
 				 </div>
 			</div>
