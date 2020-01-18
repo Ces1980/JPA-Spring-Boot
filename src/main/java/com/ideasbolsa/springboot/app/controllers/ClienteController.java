@@ -66,9 +66,18 @@ public class ClienteController {
 			model.addAttribute("titulo", "Formulario de cliente");
 			return "form";
 		}
-		
 		clienteDao.save(cliente);
 		status.setComplete();
 		return "redirect:listar";
+	}
+	
+	/*
+	 * */
+	@RequestMapping(value="/eliminar/{id}")
+	public String eliminar(@PathVariable(value="id") Long id) {
+		if(id > 0) {
+			clienteDao.delete(id);
+		}
+		return "redirect:/listar";
 	}
 }
