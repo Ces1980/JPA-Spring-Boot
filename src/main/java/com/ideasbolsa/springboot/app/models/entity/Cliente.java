@@ -15,7 +15,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -26,10 +25,13 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	/*Configurando anotaciones de validación*/
-	/*@NotEmpty: que el campo no sea envíado sin caracteres--> sólo usado en los String*/
-	/*@Email: valida que el campo envie datos en formato de correo electronico*/
-	/*@Size(min=4, max = 20): Limita el ingreso minimo y/o máximo de caracteres*/
+	/* Configurando anotaciones de validación */
+	/*
+	 * @NotEmpty: que el campo no sea envíado sin caracteres--> sólo usado en los
+	 * String
+	 */
+	/* @Email: valida que el campo envie datos en formato de correo electronico */
+	/* @Size(min=4, max = 20): Limita el ingreso minimo y/o máximo de caracteres */
 	@NotEmpty
 	private String nombre;
 	@NotEmpty
@@ -38,17 +40,20 @@ public class Cliente implements Serializable {
 	@Email
 	private String email;
 
-	/*@NotNull: que el campo no sea envíado sin caracteres--> usando en campos
-	 * con caracteres numericos o caracteres*/
+	/*
+	 * @NotNull: que el campo no sea envíado sin caracteres--> usando en campos con
+	 * caracteres numericos o caracteres
+	 */
 	@NotNull
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-mm-dd")
 	private Date createAt;
 
+	private String foto;
+
 	private static final long serialVersionUID = 1L;
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -91,6 +96,14 @@ public class Cliente implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 
 }
