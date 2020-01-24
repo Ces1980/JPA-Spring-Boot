@@ -40,8 +40,8 @@ public class ClienteController {
 	@GetMapping(value="/ver/{id}")
 	public String ver(@PathVariable(value="id") Long id, Map< String, Object > model, RedirectAttributes flash) {
 		Cliente cliente = clienteService.findOne(id);
-		if (cliente==null) {
-			flash.addAttribute("error", "El cliente no existe ne la base de datos");
+		if (cliente == null) {
+			flash.addFlashAttribute("error", "El cliente no existe ne la base de datos");
 			return "redirect:/listar";
 		}
 		model.put("cliente", cliente);
