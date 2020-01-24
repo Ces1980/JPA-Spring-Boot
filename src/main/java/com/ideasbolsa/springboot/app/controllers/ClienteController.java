@@ -103,10 +103,9 @@ public class ClienteController {
 		}
 		/*Cóndición en caso de no subir archivo*/
 		if(!foto.isEmpty()) {
-			/*Indica donde se va a guardar la foto que se va a subir*/
-			Path directorioRecursos = Paths.get("src//main//resources//static//uploads");
+			
 			/*Obtener el String del directorio para obtener la ubicación en directorio de la foto*/
-			String rootPath = directorioRecursos.toFile().getAbsolutePath();
+			String rootPath = "C://Temp//uploads";
 			try {
 				/*Obtener los bytes de las fotos*/
 				byte[] bytes = foto.getBytes();
