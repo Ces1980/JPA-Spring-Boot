@@ -1,6 +1,9 @@
 package com.ideasbolsa.springboot.app.controllers;
 
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ideasbolsa.springboot.app.models.entity.Cliente;
@@ -74,12 +78,38 @@ public class ClienteController {
 		return"form";
 	}
 	
-	
+	/*@RequestParam("file") MultipartFile foto indica el tipo de archivo que resibe de la vista 
+	 * y que es pasado como parametro*/
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
-	public String guardar(@Valid  Cliente cliente, BindingResult result, Model model, RedirectAttributes flash, SessionStatus status) {
+	public String guardar(@Valid  Cliente cliente, BindingResult result, Model model, 
+			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
+		
 		if(result.hasErrors()) {
 			model.addAttribute("titulo", "Formulario de cliente");
 			return "form";
+		}
+		/*Cóndición en caso de no subir archivo*/
+		if(!foto.isEmpty()) {
+			/*Indica donde se va a guardar la foto que se va a subir*/
+			Path directorioRecursos = Paths.get("src//main//resources//static//uploads");
+			/*Obtener el String del directorio para obtener la ubicación en directorio de la foto*/
+			String rootPath = directorioRecursos.toFile().getAbsolutePath();
+			try {
+				/*Obtener los bytes de las fotos*/
+				byte[] bytes = foto.getBytes();
+				/*Obtener la ruta completa del archivo*/
+				Path rutaCompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
+				/*Escribir los bytes de un archivo pasando como parametro 
+				 * la ubicación completa de la imagen y el tamaño en bytes*/
+				Files.write(rutaCompleta,bytes);
+				/*Menasje al conbcluir la acción */
+				flash.addFlashAttribute("info", "Has subido correctamente '" + foto.getOriginalFilename() + "'");
+				/*pasar el nombre de la foto al clinete para que quede almacenada en la base de datos y quede 
+				 * a disposición para almacenar al cliente*/
+				cliente.setFoto(foto.getOriginalFilename());
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
 		
 		String mensajeFlash = (cliente.getId() != null)? "Cliente editado con éxito": "Cliente creado con éxito";
