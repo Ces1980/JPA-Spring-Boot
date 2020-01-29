@@ -2,6 +2,7 @@ package com.ideasbolsa.springboot.app.controllers;
 
 
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,8 +46,10 @@ public class ClienteController {
 
 	@Autowired
 	private IClienteService clienteService;
-	
+		
 	private final Logger log = LoggerFactory.getLogger(getClass());
+	/*Declaración de una cosntante para la declaración uploads*/
+	private final static String UPLOADS_FOLDER = "uploads";
 	
 	/*value = "/uploads/{filename:.+}" se carga el punto en la expresión regular 
 	 * porque Spring trunca los archivos que terminan en punto y solo pasa como parametro
@@ -54,7 +57,7 @@ public class ClienteController {
 	 * */
 	@GetMapping(value = "/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename){
-		Path pathFoto = Paths.get("uploads").resolve(filename).toAbsolutePath();
+		Path pathFoto = Paths.get(UPLOADS_FOLDER).resolve(filename).toAbsolutePath();
 		log.info("pathfoto: = " + pathFoto);
 		
 		Resource recurso = null;
@@ -141,10 +144,31 @@ public class ClienteController {
 			model.addAttribute("titulo", "Formulario de cliente");
 			return "form";
 		}
+		/*Condición para saber si existe una foto cargada en el perfil del usuario(cliente)*/
 		if(!foto.isEmpty()) {
-
+			/*Condición que permite saber si la foto esta en el perfil, si esta en el perfil con Id existente,
+			 * que existe foto cargada en el perfíl, si la foto es mayor a 0.....
+			 * Todas estas condiciones son las que existen para saber si hay una foto cargada en el perfíl*/
+			if (cliente.getId() !=null && cliente.getId() > 0 && cliente.getFoto()!=null && cliente.getFoto().length() > 0) {
+				
+				/*Instrucción para obtener la raíz de la ruta donde se almacena el archivo */
+				Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
+				/*La clase File () permite crear objetos que abstraen nombres de ruta de archivos y directorios
+				 * La raíz de la ruta se almacena en la variable archivo*/
+				File archivo = rootPath.toFile();
+				
+				/*Utilizando los métodos de la clase File se genera la condición que utilizando como
+				 * condición si el archivo existe y que si se puede leer se porceda a la siguiente condición*/
+				if (archivo.exists() && archivo.canRead()) {
+					/*Condición que borra el archivo*/
+					if (archivo.delete()) {
+						flash.addAttribute("info","Foto: " + cliente.getFoto() + " eliminada con éxito!");
+					}
+				}
+			}
+			
 			String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
-			Path rootPath = Paths.get("uploads").resolve(uniqueFilename);
+			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(uniqueFilename);
 			
 			Path rootAbsolutePath = rootPath.toAbsolutePath();
 			
@@ -175,9 +199,22 @@ public class ClienteController {
 	@RequestMapping(value="/eliminar/{id}")
 	public String eliminar(@PathVariable(value="id") Long id, RedirectAttributes flash ) {
 		if(id > 0) {
+			
+			Cliente cliente = clienteService.findOne(id);
 			clienteService.delete(id);
 			flash.addFlashAttribute("warning", "Cliente eliminado con éxito");
+			
+			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
+			File archivo = rootPath.toFile();
+			
+			if (archivo.exists() && archivo.canRead()) {
+				if (archivo.delete()) {
+					flash.addFlashAttribute("info","Foto: " + cliente.getFoto() + " eliminada con éxito!");
+				}
+				
+			}
 		}
+		
 		return "redirect:/listar";
 	}
 }
