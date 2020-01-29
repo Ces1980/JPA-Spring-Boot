@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfig implements WebMvcConfigurer {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
-
+/*
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// TODO Auto-generated method stub
@@ -25,6 +25,6 @@ public class MvcConfig implements WebMvcConfigurer {
 		.addResourceLocations(resourcePath);
 	}
 	
-	
+	*/
 
 }
