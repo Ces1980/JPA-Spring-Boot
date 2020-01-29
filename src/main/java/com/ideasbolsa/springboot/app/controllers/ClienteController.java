@@ -5,9 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,12 +33,15 @@ import com.ideasbolsa.springboot.app.models.service.IClienteService;
 import com.ideasbolsa.springboot.app.util.paginator.PageRender;
 
 
+
 @Controller
 @SessionAttributes("cliente")
 public class ClienteController {
 
 	@Autowired
 	private IClienteService clienteService;
+	
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	@GetMapping(value="/ver/{id}")
 	public String ver(@PathVariable(value="id") Long id, Map< String, Object > model, RedirectAttributes flash) {
@@ -91,8 +97,7 @@ public class ClienteController {
 		return"form";
 	}
 	
-	/*@RequestParam("file") MultipartFile foto indica el tipo de archivo que resibe de la vista 
-	 * y que es pasado como parametro*/
+	
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public String guardar(@Valid  Cliente cliente, BindingResult result, Model model, 
 			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
@@ -101,24 +106,24 @@ public class ClienteController {
 			model.addAttribute("titulo", "Formulario de cliente");
 			return "form";
 		}
-		/*Cóndición en caso de no subir archivo*/
 		if(!foto.isEmpty()) {
+
+			String uniqueFilename = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
+			Path rootPath = Paths.get("uploads").resolve(uniqueFilename);
 			
-			/*Obtener el String del directorio para obtener la ubicación en directorio de la foto*/
-			String rootPath = "C://Temp//uploads";
+			Path rootAbsolutePath = rootPath.toAbsolutePath();
+			
+			log.info("rootPath= " + rootPath);
+			log.info("rootAbsolutePath= " + rootAbsolutePath);
+
 			try {
-				/*Obtener los bytes de las fotos*/
-				byte[] bytes = foto.getBytes();
-				/*Obtener la ruta completa del archivo*/
-				Path rutaCompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
-				/*Escribir los bytes de un archivo pasando como parametro 
-				 * la ubicación completa de la imagen y el tamaño en bytes*/
-				Files.write(rutaCompleta,bytes);
+				
+				Files.copy(foto.getInputStream(), rootAbsolutePath);
 				/*Menasje al conbcluir la acción */
-				flash.addFlashAttribute("info", "Has subido correctamente '" + foto.getOriginalFilename() + "'");
+				flash.addFlashAttribute("info", "Has subido correctamente '" + uniqueFilename + "'");
 				/*pasar el nombre de la foto al clinete para que quede almacenada en la base de datos y quede 
 				 * a disposición para almacenar al cliente*/
-				cliente.setFoto(foto.getOriginalFilename());
+				cliente.setFoto(uniqueFilename);
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
