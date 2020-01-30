@@ -46,31 +46,10 @@ public class Cliente implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-mm-dd")
 	private Date createAt;
 
-	/*Anotación que indica que un cliente puede generar muchas facturas
-	 * One = > un cliente
-	 * ToMany = > muchas facturas*/
-	/* fetch = FetchType.LAZY = > Estrategia de carga de datos: peude ser EAGER o LAZY
-	* Se recomienda EAZY */
 	
-	/* cascade=CascadeType.ALL:
-	 * 
-	 * (Opcional) Las operaciones que deben conectarse en cascada 
-	 * con el objetivo de la asociación. 
-	 * El valor predeterminado es que no hay operaciones en cascada.
-	 * Cuando la colección de destino es un java.util.Map, 
-	 * el elemento en cascada se aplica al valor del mapa.
-	 * */
-	
-	/*mappedBy ="cliente"
-	 * 
-	 * Para relacionar ambas llaves en la base de datos
-	 * */
-	@OneToMany(mappedBy ="cliente" ,fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy ="cliente" ,fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<Factura> facturas;
 	
-	/**
-	 * Se crea un constructor para inicializar 
-	 * una factura cuando se crea un cliente*/
 	public Cliente() {
 		facturas = new ArrayList<Factura>();
 	}

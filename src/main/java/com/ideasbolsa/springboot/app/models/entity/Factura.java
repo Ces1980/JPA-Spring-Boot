@@ -1,15 +1,20 @@
 package com.ideasbolsa.springboot.app.models.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,26 +33,34 @@ public class Factura implements Serializable {
 	
 	private String observacion;
 	
-	/* Esta anotación se debe especificar para las propiedades de campo persistente 
-	 * de tipo java.util.Date y java.util.Calendar. Solo se puede especificar para el 
-	 * campo o las propiedades de estos tipos.
-     * La anotación temporal se puede usar en combinación con la anotación básica, 
-     * la anotación I o la anotación ElementCollection (cuando el valor de la 
-     * colección de elementos es de ese tipo temporal.
-     **/
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name="create_at")
 	private Date createAt;
-	/* Anotación que indica que muchas facturas pueden ser generadas por un cliente
-	 * Many = > facturas
-	 * ToOne = > cliente
-	 * fetch = FetchType.LAZY = > Estrategia de carga de datos: peude ser EAGER o LAZY
-	 * Se recomienda EAZY */
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Cliente cliente;
+	
+	/**Se requiere saber las lineas de la factura(productos a comprar)
+	 *  @OneToMany --> Una factura, muchos hijos factura
+	 *  cascade = CascadeType.ALL --> permite que al eliminar una factura 
+	 *  se borren los items(productos registrados en la factura)
+	 * */
+	
+	/**@JoinColumn permite la relación en un solo sentido
+	 * indicando la llave foranea a la cual se va a relacionar nuestra
+	 * lista colección de items a la columna factura_id 
+	 * */
+	/**Colección de items almacenados en el item factura 
+	 * */
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "factura_id")
+	private List<ItemFactura> items;
 
-	/* Método que permite generar la fecha de la factura antes de 
-	 * generar la factura*/
+
+	public Factura() {
+		this.items = new ArrayList<ItemFactura>();
+	}
 	@PrePersist
 	public void prePersist() {
 		createAt = new Date();
@@ -92,9 +105,17 @@ public class Factura implements Serializable {
 		this.cliente = cliente;
 	}
 	
-	/**
-	 * 
-	 */
+	public List<ItemFactura> getItems() {
+		return items;
+	}
+	public void setItems(List<ItemFactura> items) {
+		this.items = items;
+	}
+
+	public void addItemFactura(ItemFactura item) {
+		this.items.add(item);
+	}
+	
 	private static final long serialVersionUID = 1L;
 	
 }
