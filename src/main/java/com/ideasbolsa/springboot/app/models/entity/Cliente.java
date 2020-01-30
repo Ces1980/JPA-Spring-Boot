@@ -1,5 +1,6 @@
 package com.ideasbolsa.springboot.app.models.entity;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,10 +33,10 @@ public class Cliente implements Serializable {
 
 	@NotEmpty
 	private String nombre;
-	
+
 	@NotEmpty
 	private String apellido;
-	
+
 	@NotEmpty
 	@Email
 	private String email;
@@ -43,20 +44,17 @@ public class Cliente implements Serializable {
 	@NotNull
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createAt;
 
-	
-	@OneToMany(mappedBy ="cliente" ,fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Factura> facturas;
-	
-	public Cliente() {
-		facturas = new ArrayList<Factura>();
-	}
 
 	private String foto;
 
-	
+	public Cliente() {
+		facturas = new ArrayList<Factura>();
+	}
 
 	public Long getId() {
 		return id;
@@ -98,6 +96,14 @@ public class Cliente implements Serializable {
 		this.createAt = createAt;
 	}
 
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
 	public List<Factura> getFacturas() {
 		return facturas;
 	}
@@ -106,24 +112,14 @@ public class Cliente implements Serializable {
 		this.facturas = facturas;
 	}
 
-	public String getFoto() {
-		return foto;
-	}
-
-	public void setFoto(String foto) {
-		this.foto = foto;
-	}
-	
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
-	/**
-	 * Método que guarda la factura generada una por una*/
 	public void addFactura(Factura factura) {
 		facturas.add(factura);
 	}
-	
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 }

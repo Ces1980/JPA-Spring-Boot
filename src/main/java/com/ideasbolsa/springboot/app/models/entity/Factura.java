@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
 @Entity
 @Table(name = "facturas")
 public class Factura implements Serializable {
@@ -28,18 +27,18 @@ public class Factura implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String descripcion;
-	
+
 	private String observacion;
-	
-	
+
 	@Temporal(TemporalType.DATE)
-	@Column(name="create_at")
+	@Column(name = "create_at")
 	private Date createAt;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Cliente cliente;
+
 	
 	/**Se requiere saber las lineas de la factura(productos a comprar)
 	 *  @OneToMany --> Una factura, muchos hijos factura
@@ -53,18 +52,22 @@ public class Factura implements Serializable {
 	 * */
 	/**Colección de items almacenados en el item factura 
 	 * */
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	
+	/*orphanRemoval = true --> remueve registros huerfanos, que no existan relacion 
+	 * o asociados a ninguna factura*/
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "factura_id")
 	private List<ItemFactura> items;
-
 
 	public Factura() {
 		this.items = new ArrayList<ItemFactura>();
 	}
+
 	@PrePersist
 	public void prePersist() {
 		createAt = new Date();
 	}
+
 	public Long getId() {
 		return id;
 	}
@@ -104,10 +107,11 @@ public class Factura implements Serializable {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
+
 	public List<ItemFactura> getItems() {
 		return items;
 	}
+
 	public void setItems(List<ItemFactura> items) {
 		this.items = items;
 	}
@@ -115,22 +119,19 @@ public class Factura implements Serializable {
 	public void addItemFactura(ItemFactura item) {
 		this.items.add(item);
 	}
-	
+
 	public Double getTotal() {
 		Double total = 0.0;
-		
+
 		int size = items.size();
-		
+
 		for (int i = 0; i < size; i++) {
-			
 			total += items.get(i).calcularImporte();
 		}
-		
 		return total;
 	}
-	
+
 	private static final long serialVersionUID = 1L;
-	
 }
 
 
