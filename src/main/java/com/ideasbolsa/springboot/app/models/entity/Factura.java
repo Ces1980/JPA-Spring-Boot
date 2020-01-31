@@ -1,5 +1,7 @@
 package com.ideasbolsa.springboot.app.models.entity;
 
+
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,23 +41,7 @@ public class Factura implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Cliente cliente;
 
-	
-	/**Se requiere saber las lineas de la factura(productos a comprar)
-	 *  @OneToMany --> Una factura, muchos hijos factura
-	 *  cascade = CascadeType.ALL --> permite que al eliminar una factura 
-	 *  se borren los items(productos registrados en la factura)
-	 * */
-	
-	/**@JoinColumn permite la relación en un solo sentido
-	 * indicando la llave foranea a la cual se va a relacionar nuestra
-	 * lista colección de items a la columna factura_id 
-	 * */
-	/**Colección de items almacenados en el item factura 
-	 * */
-	
-	/*orphanRemoval = true --> remueve registros huerfanos, que no existan relacion 
-	 * o asociados a ninguna factura*/
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "factura_id")
 	private List<ItemFactura> items;
 
@@ -133,5 +119,3 @@ public class Factura implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 }
-
-

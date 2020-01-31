@@ -1,5 +1,6 @@
 package com.ideasbolsa.springboot.app.models.entity;
 
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public class Producto implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "create_at")
 	private Date createAt;
-	
+
 	@PrePersist
 	public void prePersist() {
 		createAt = new Date();

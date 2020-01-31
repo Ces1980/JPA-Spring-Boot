@@ -1,6 +1,7 @@
 package com.ideasbolsa.springboot.app.models.entity;
 
 
+
 import java.io.Serializable;
 
 import javax.persistence.Entity;
