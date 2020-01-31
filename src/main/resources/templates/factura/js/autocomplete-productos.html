@@ -29,8 +29,18 @@
 					});
 				},
 				select: function (event, ui) {
-					$("#buscar_producto").val(ui.item.label);
+					//$("#buscar_producto").val(ui.item.label);
+					/* Se obtiene la platilla plantillaItemsFactura" que se encuentra 
+					en plantilla-items.html y se ubica en la variable linea
+					 */
+					var linea = $("#plantillaItemsFactura").html();
+					/* Se cambian los parametros y se cargan al tbody de la 
+					*  tabla cargarItemProductos ubicada en templates/factura/js/form.html*/
+					linea = linea.replace(/{ID}/g, ui.item.value);
+					linea = linea.replace(/{NOMBRE}/g, ui.item.label);
+					linea = linea.replace(/{PRECIO}/g, ui.item.precio);
 
+					$("#cargarItemProductos tbody").append(linea);
 					return false;
 				}
 			});
