@@ -54,7 +54,7 @@ public class ClienteServiceImpl implements IClienteService {
 	}
 
 	@Override
-	public List<Producto> finByNombre(String term) {
+	public List<Producto> findByNombre(String term) {
 	
 		return productoDao.findByNombreLikeIgnoreCase("%"+term+"%");
 	}

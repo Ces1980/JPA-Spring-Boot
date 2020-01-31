@@ -23,6 +23,6 @@ public interface IClienteService {
 		//Método para elminar un registro
 		public void delete(Long id);
 		//Método para listar un producto
-		public List<Producto> finByNombre(String term);
+		public List<Producto> findByNombre(String term);
 
 }
