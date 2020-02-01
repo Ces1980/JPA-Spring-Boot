@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 
 import com.ideasbolsa.springboot.app.models.entity.Cliente;
+import com.ideasbolsa.springboot.app.models.entity.Factura;
 import com.ideasbolsa.springboot.app.models.entity.Producto;
 
 public interface IClienteService {
@@ -24,5 +25,7 @@ public interface IClienteService {
 		public void delete(Long id);
 		//Método para listar un producto
 		public List<Producto> findByNombre(String term);
+		//Método para salvar factura
+		public void saveFactura (Factura factura);
 
 }
