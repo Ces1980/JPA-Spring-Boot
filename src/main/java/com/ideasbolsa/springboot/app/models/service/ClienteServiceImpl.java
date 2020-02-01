@@ -63,10 +63,21 @@ public class ClienteServiceImpl implements IClienteService {
 		return productoDao.findByNombreLikeIgnoreCase("%"+term+"%");
 	}
 
+	/*Método para salvar la factura*/
 	@Override
 	@Transactional
 	public void saveFactura(Factura factura) {
 		facturaDao.save(factura);
+	}
+	
+	/*Método para buscar un producto
+	 * */
+	@Override
+	@Transactional(readOnly = true)
+	public Producto findProductoById(Long id) {
+		// TODO Auto-generated method stub
+		//En caso de no encontrar el producto la retorno regresara un null
+		return productoDao.findById(id).orElse(null);
 	}
 
 }

@@ -27,5 +27,7 @@ public interface IClienteService {
 		public List<Producto> findByNombre(String term);
 		//Método para salvar factura
 		public void saveFactura (Factura factura);
+		//Método para buscar producto
+		public Producto findProductoById(Long id);
 
 }
