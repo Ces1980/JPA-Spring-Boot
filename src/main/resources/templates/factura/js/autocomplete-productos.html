@@ -46,6 +46,14 @@
 					return false;
 				}
 			});
+/* Instrucción que permite borrar la plantilla cuando se envía los datos de la factura
+ * Si no se elimina la plnatilla toma los datos de el formulario como si fuera una línea más 
+ * y va a lanzar un error. Al generar el evento submit es cuando se elimina y evita que el formulario 
+ * tome datos extra */
+			$("form").submit(function(){
+				$("#plantillaItemsFactura").remove();
+				return;
+			});
 		});
 
 		var itemsHelper = {
