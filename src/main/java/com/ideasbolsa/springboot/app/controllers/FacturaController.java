@@ -4,10 +4,14 @@ package com.ideasbolsa.springboot.app.controllers;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,18 +67,32 @@ public class FacturaController {
 	
 //-->Inicia el método guardar	
 	
-	/*En los parametros del método se inyecta el objeto Factura
-	 * Se inyectan como parametros el id de los items(declaradas de tipo arreglo) 
-	 * y la cantidad también declaradas de tipo arreglo, estos detalles se ven en los input de la vista 
-	 * donde se van a cachar los datos --> (templates/factura/plantilla-items.html)
-	 * En los input los campos aparacen como name="item_id[]" y name="cantidad[]" 
-	 * Por último se se utilza la clase RedirectAttributes para mostrar mensajes
-	 * Para poder enviar la factura, se tiene que terminar el status de la sessión, 
-	 * para ellos se hace uso de la clase SessionStatus   */
+	/*
+     *Se ha agregado la anotación @Valid para habilitar la validación en el objeto factura
+     *BindingResult para comprobar si existen errores en la validación de la factura
+     * */
 	@PostMapping(value = "/form")
-	public String guardar(Factura factura, @RequestParam(name = "item_id[]", required = false) 
+	public String guardar(@Valid Factura factura,
+			              BindingResult result,
+			              Model model,
+			              @RequestParam(name = "item_id[]", required = false) 
 							Long [] itemId, @RequestParam(name="cantidad[]", required = false)
 							Integer[] cantidad, RedirectAttributes flash, SessionStatus status) {
+		
+		/*Condición que nos regresa a la vista factura/form en caso de haber algún error
+		 * al llenar la factura*/
+		if (result.hasErrors()) {
+			model.addAttribute("titulo", "Crear factura");
+			return "factura/form";
+		}
+		
+		/*Condición que indica que si el no hay item en las líneas de captura
+		 * NO SE PUEDE ENVIAR LA FACTURA*/
+		if (itemId == null || itemId.length == 0) {
+			model.addAttribute("titulo", "Crear factura");
+			model.addAttribute("error", "Error: la factura No puede no tener líneas");
+			return "factura/form";
+		}
 		
 		for (int i = 0; i < itemId.length; i++) {
 			Producto producto = clienteService.findProductoById(itemId[i]);
