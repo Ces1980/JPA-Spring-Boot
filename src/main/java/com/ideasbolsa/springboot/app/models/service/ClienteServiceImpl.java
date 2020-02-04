@@ -37,6 +37,14 @@ public class ClienteServiceImpl implements IClienteService {
 	public Cliente findOne(Long id) {
 		return clienteDao.findById(id).orElse(null);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Cliente fetchByWithFacturas(Long id) {
+		// TODO Auto-generated method stub
+		return clienteDao.fetchByIdWithFacturas(id);
+	}
+
 
 	@Override
 	@Transactional
