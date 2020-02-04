@@ -45,7 +45,7 @@ public class FacturaController {
 	public String ver (@PathVariable(value= "id") Long id,
 						Model model, RedirectAttributes flash) {
 		/*PAra obtener la factura por el id*/
-		Factura factura = clienteService.findFacturaById(id);
+		Factura factura = clienteService.fetchFacturaByIdWithClienteWithItemFacturaWithProducto(id);//clienteService.findFacturaById(id);
 		
 		/*Para validar la factura*/
 		if (factura==null) {
