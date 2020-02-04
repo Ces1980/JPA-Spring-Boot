@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.thymeleaf.org">
+
 <head th:replace="layout/layout :: head"></head>
+
 <body>
 	<header th:replace="layout/layout :: header"></header>
 
@@ -9,11 +11,11 @@
 		<div class="card bg-light">
 			<div class="card-header" th:text="${titulo}"></div>
 			<div class="card-body">
-				
+
 				<!--Bot�n para crear la factura-->
-				<h4 class="card-title"> 
-					<a class="btn btn-primary btn-xs" th:href="@{'/factura/form/'+ ${cliente.id}}" 
-					th:text="'crear factura'"></a>
+				<h4 class="card-title">
+					<a class="btn btn-primary btn-xs" th:href="@{'/factura/form/'+ ${cliente.id}}"
+						th:text="'crear factura'"></a>
 				</h4>
 
 				<img th:if="${#strings.length(cliente.foto) > 0}"
@@ -41,6 +43,7 @@
 							<th>fecha</th>
 							<th>total</th>
 							<th>ver</th>
+							<th>eliminar</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -50,6 +53,8 @@
 							<td th:text="${factura.createAt}"></td>
 							<td th:text="${factura.total}"></td>
 							<td><a class="btn btn-primary btn-xs" th:href="@{'/factura/ver/' + ${factura.id}}" th:text="'detalle'"></a></td>
+							<td><a class="btn btn-danger btn-xs" th:href="@{'/factura/eliminar/' + ${factura.id}}" th:text="'eliminar'"
+								onclick="return confirm('¿Estas seguro que deseas eliminar la factura?');"></a></td>	
 						</tr>
 					</tbody>
 				</table>

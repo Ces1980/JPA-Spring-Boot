@@ -31,5 +31,7 @@ public interface IClienteService {
 		public Producto findProductoById(Long id);
 		//Método para buscar facturas
 		public Factura findFacturaById(Long id);
+		//Método para borrar facturas
+		public void deleteFactura(Long id);
 
 }
