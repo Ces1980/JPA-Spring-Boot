@@ -56,7 +56,8 @@ public class ClienteController {
 	@Autowired
 	private IUploadFileService uploadFileService;
 
-	/* Método verFoto */
+// Método verFoto */
+	@Secured("ROLE_USER")
 	@GetMapping(value = "/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
 
@@ -72,7 +73,8 @@ public class ClienteController {
 				"attachment; filename=\"" + recurso.getFilename() + "\"").body(recurso);
 	}
 
-	/* Método ver */
+// Método ver */
+	@Secured("ROLE_USER")
 	@GetMapping(value = "/ver/{id}")
 	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 		Cliente cliente = clienteService.fetchByWithFacturas(id);// clienteService.findOne(id);
@@ -85,6 +87,7 @@ public class ClienteController {
 		return "ver";
 	}
 
+//Método listar	
 	@RequestMapping(value = { "/listar", "/" }, method = RequestMethod.GET)
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
 			Authentication authentication, HttpServletRequest request) {
@@ -140,7 +143,8 @@ public class ClienteController {
 		return "listar";
 	}
 
-	/* Método crear */
+//Método crear */
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form")
 	public String crear(Map<String, Object> model) {
 		Cliente cliente = new Cliente();
@@ -149,9 +153,8 @@ public class ClienteController {
 		return "form";
 	}
 
-	/* Método editar **/
-	// RedirectAttributes: librería que permite mandar un mensaje cuando se realiza
-	// una acción de redireccionamiento */
+	//Método editar **/
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 		Cliente cliente = null;
@@ -171,7 +174,7 @@ public class ClienteController {
 		return "form";
 	}
 
-	/* Método guardar */
+	// Método guardar */
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public String guardar(@Valid Cliente cliente, BindingResult result, Model model,
 			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
@@ -180,17 +183,8 @@ public class ClienteController {
 			model.addAttribute("titulo", "Formulario de cliente");
 			return "form";
 		}
-		/*
-		 * Condición para saber si existe una foto cargada en el perfil del
-		 * usuario(cliente)
-		 */
+
 		if (!foto.isEmpty()) {
-			/*
-			 * Condición que permite saber si la foto esta en el perfil, si esta en el
-			 * perfil con Id existente, que existe foto cargada en el perfíl, si la foto es
-			 * mayor a 0..... Todas estas condiciones son las que existen para saber si hay
-			 * una foto cargada en el perfíl
-			 */
 			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null
 					&& cliente.getFoto().length() > 0) {
 
@@ -223,7 +217,8 @@ public class ClienteController {
 		return "redirect:listar";
 	}
 
-	/* Método eliminar */
+	//Método eliminar */
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
 		if (id > 0) {
@@ -239,6 +234,7 @@ public class ClienteController {
 		return "redirect:/listar";
 	}
 
+	//Método para identificar el rol
 	private boolean hasRole(String role) {
 
 		SecurityContext context = SecurityContextHolder.getContext();

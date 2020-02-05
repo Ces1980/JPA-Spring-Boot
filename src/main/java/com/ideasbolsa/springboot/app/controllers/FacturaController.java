@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,8 +29,10 @@ import com.ideasbolsa.springboot.app.models.entity.ItemFactura;
 import com.ideasbolsa.springboot.app.models.entity.Producto;
 import com.ideasbolsa.springboot.app.models.service.IClienteService;
 
-
-
+/*Todos los métodos de la factura requieren ser módificados por el rol del administrador
+ * y para no anotar en todos los métodos con @Secured, se inserta la anotación
+ * de forma global al inicio de la clase*/
+@Secured("ROLE_ADMIN")
 @Controller
 @RequestMapping("/factura")
 @SessionAttributes("factura")
@@ -39,7 +42,7 @@ public class FacturaController {
 	private IClienteService clienteService;
 	 
 	private final Logger log = LoggerFactory.getLogger(getClass());
-	
+//Método ver
 	@GetMapping("/ver/{id}")
 	public String ver (@PathVariable(value= "id") Long id,
 						Model model, RedirectAttributes flash) {
@@ -57,6 +60,7 @@ public class FacturaController {
 		return "factura/ver";
 	}
 
+	//Método crear 
 	@GetMapping("/form/{clienteId}")
 	public String crear(@PathVariable(value = "clienteId") Long clienteId, Map<String, Object> model,
 			RedirectAttributes flash) {
@@ -77,6 +81,7 @@ public class FacturaController {
 		return "factura/form";
 	}
 
+//Método listar
 	@GetMapping(value = "/cargar-productos/{term}", produces = { "application/json" })
 	public @ResponseBody List<Producto> cargarProductos(@PathVariable String term) {
 		return clienteService.findByNombre(term);
@@ -84,10 +89,6 @@ public class FacturaController {
 	
 //-->Inicia el método guardar	
 	
-	/*
-     *Se ha agregado la anotación @Valid para habilitar la validación en el objeto factura
-     *BindingResult para comprobar si existen errores en la validación de la factura
-     * */
 	@PostMapping(value = "/form")
 	public String guardar(@Valid Factura factura,
 			              BindingResult result,
@@ -131,7 +132,9 @@ public class FacturaController {
 	}
 
 	//--> fin del método guardar
-	/*Método eliminar*/
+	
+	
+	//Método eliminar*/
 	@GetMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id, RedirectAttributes flash ) {
 		Factura factura = clienteService.findFacturaById(id);
