@@ -32,6 +32,8 @@ import com.ideasbolsa.springboot.app.models.service.IClienteService;
 /*Todos los métodos de la factura requieren ser módificados por el rol del administrador
  * y para no anotar en todos los métodos con @Secured, se inserta la anotación
  * de forma global al inicio de la clase*/
+/*SE pueden agregar más roles en las anotaciones de @Secured -->
+ * En la documentacion de Spring Security hay información al respecto*/
 @Secured("ROLE_ADMIN")
 @Controller
 @RequestMapping("/factura")

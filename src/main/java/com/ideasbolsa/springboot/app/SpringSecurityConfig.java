@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.ideasbolsa.springboot.app.auth.handler.LoginSuccesHandler;
 
 
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 

@@ -74,7 +74,8 @@ public class ClienteController {
 	}
 
 // Método ver */
-	@Secured("ROLE_USER")
+	/*@Secured("ROLE_USER")*/
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping(value = "/ver/{id}")
 	public String ver(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 		Cliente cliente = clienteService.fetchByWithFacturas(id);// clienteService.findOne(id);
@@ -154,7 +155,8 @@ public class ClienteController {
 	}
 
 	//Método editar **/
-	@Secured("ROLE_ADMIN")
+	/*@Secured("ROLE_ADMIN")*/
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/form/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 		Cliente cliente = null;
