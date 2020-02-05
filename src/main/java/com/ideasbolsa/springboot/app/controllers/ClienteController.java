@@ -93,6 +93,7 @@ public class ClienteController {
 			logger.info("Hola usuario autenticado, tu username es: ".concat(authentication.getName()));
 		}
 
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		if (auth != null) {
@@ -107,6 +108,8 @@ public class ClienteController {
 			logger.info("Hola ".concat(auth.getName()).concat(" NO tienes acceso!"));
 		}
 
+		/*Otra forma de identificar la autorización con 
+		 * SecurityContextHolderAwareRequestWrapper*/
 		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request,
 				"");
 
@@ -118,6 +121,8 @@ public class ClienteController {
 					.concat(" NO tienes acceso!"));
 		}
 
+		/*Otra forma de identificar la autorización con 
+		 * HttpServletRequest*/
 		if (request.isUserInRole("ROLE_ADMIN")) {
 			logger.info("Forma usando HttpServletRequest: Hola ".concat(auth.getName()).concat(" tienes acceso!"));
 		} else {
