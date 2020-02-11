@@ -25,6 +25,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private LoginSuccesHandler successHandler;
 	
+	/*Inyectar DataSourse para la conexión a la base de datos*/
 	@Autowired 
 	private DataSource dataSource;
 	
@@ -56,10 +57,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	public void configurerGlobal(AuthenticationManagerBuilder build) throws Exception
 	{
+		//Configurar la autentificación
 		build.jdbcAuthentication()
+		//Ahora se pasa como instancia la conexión a la base de datos
 		.dataSource(dataSource)
+		//Ahora se pasa el passwordEncoder
 		.passwordEncoder(passwordEncoder)
+		//Configurar la consulta de tipo nativa con sql por medio del nombre
 		.usersByUsernameQuery("select username, password, enabled from users where username=?")
+		//Consulta para autorizar los roles
 		.authoritiesByUsernameQuery("select u.username, a.authority from authorities a inner join users u on (a.user_id=u.id) where u.username=?");
 		
 		/*
